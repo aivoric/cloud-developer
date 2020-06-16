@@ -18,23 +18,48 @@ router.get('/', async (req: Request, res: Response) => {
 
 //@TODO
 //Add an endpoint to GET a specific resource by Primary Key
+router.get('/:id', async (req: Request, res: Response) => {
+    let { id } = req.params;
+    const item = await FeedItem.findOne({
+        where: {
+          id: id
+        } 
+      });
+    res.send(item);
+});
 
 // update a specific resource
 router.patch('/:id', 
     requireAuth, 
     async (req: Request, res: Response) => {
-        //@TODO try it yourself
-        res.send(500).send("not implemented")
-});
+        let { id } = req.params;
+        let { newValue } = req.query;
+        
+        if ( !newValue ) {
+            return res.status(400)
+                      .send(`newValue is required`);
+          }
+        let item = await FeedItem.update({ caption: newValue }, {
+            where: {
+                id: id  
+            }
+        });
 
+        if (item) {
+            res.status(200).send(`Successfully update FeedItem ${id} to ${newValue}`)
+        } else  {
+            res.status(404).send(`Did not find a matching ID.`)
+        }
+});
 
 // Get a signed url to put a new item in the bucket
 router.get('/signed-url/:fileName', 
     requireAuth, 
     async (req: Request, res: Response) => {
-    let { fileName } = req.params;
-    const url = AWS.getPutSignedUrl(fileName);
-    res.status(201).send({url: url});
+        console.log("test");
+        let { fileName } = req.params;
+        const url = AWS.getPutSignedUrl(fileName);
+        res.status(201).send({url: url});
 });
 
 // Post meta data and the filename after a file is uploaded 

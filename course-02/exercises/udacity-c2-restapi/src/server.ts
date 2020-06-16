@@ -13,6 +13,11 @@ import { V0MODELS } from './controllers/v0/model.index';
 
   const app = express();
   const port = process.env.PORT || 8080; // default port to listen
+
+  process.on('unhandledRejection', (reason, p) => {
+    console.log('XXXXXXXXXXXXXXXXXXXXXXXXX Unhandled Rejection at: Promise', p, 'reason:', reason);
+    // application specific logging, throwing an error, or other logic here
+  });
   
   app.use(bodyParser.json());
 
