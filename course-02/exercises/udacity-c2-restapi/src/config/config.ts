@@ -15,5 +15,8 @@ export const config = {
     "database": "",
     "host": "",
     "dialect": "postgres"
+  },
+  "jwt": {
+    "secret": "helloworld"
   }
 }
