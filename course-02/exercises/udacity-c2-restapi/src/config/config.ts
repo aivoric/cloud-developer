@@ -17,6 +17,6 @@ export const config = {
     "dialect": "postgres"
   },
   "jwt": {
-    "secret": "helloworld"
+    "secret": process.env.AWS_DEV_SECRET
   }
 }
